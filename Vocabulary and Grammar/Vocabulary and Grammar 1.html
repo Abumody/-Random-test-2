@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar/Vocabulary Test - Mock Exam</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #43e97b, #38f9d7);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #43e97b, #38f9d7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .exam-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .info-box {
+            background: rgba(67, 233, 123, 0.1);
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #495057;
+            border: 1px solid rgba(67, 233, 123, 0.2);
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .instructions p {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instructions i {
+            margin-right: 10px;
+            color: #43e97b;
+        }
+        
+        .passage-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .passage-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .section-title i {
+            margin-right: 12px;
+            color: #43e97b;
+            font-size: 1.8rem;
+        }
+        
+        .passage-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #43e97b;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .blank {
+            display: inline-block;
+            position: relative;
+            margin: 0 5px;
+        }
+        
+        .blank-number {
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: #e74c3c;
+            font-weight: bold;
+            background: #fff;
+            padding: 3px 8px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #ffebee;
+            z-index: 2;
+        }
+        
+        .blank-select {
+            min-width: 130px;
+            padding: 10px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+            font-weight: 500;
+        }
+        
+        .blank-select:focus {
+            outline: none;
+            border-color: #43e97b;
+            box-shadow: 0 0 0 3px rgba(67, 233, 123, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .blank-select:hover {
+            border-color: #adb5bd;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+        }
+        
+        .blank-select.correct {
+            background: linear-gradient(to bottom, #d4edda, #c3e6cb);
+            border-color: #28a745;
+            color: #155724;
+            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+        }
+        
+        .blank-select.incorrect {
+            background: linear-gradient(to bottom, #f8d7da, #f1b0b7);
+            border-color: #dc3545;
+            color: #721c24;
+            box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-check {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+        }
+        
+        .btn-reset {
+            background: linear-gradient(135deg, #ff9800, #ef6c00);
+            color: white;
+        }
+        
+        .btn-dashboard {
+            background: linear-gradient(135deg, #2196f3, #0d47a1);
+            color: white;
+        }
+        
+        .btn-results {
+            background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+            color: white;
+        }
+        
+        .results {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .score {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+        
+        .score-value {
+            color: #43e97b;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .feedback {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        
+        .progress-ring {
+            margin: 0 auto 20px;
+            width: 120px;
+            height: 120px;
+        }
+        
+        .progress-ring-circle {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .progress-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            fill: #43e97b;
+        }
+        
+        .hint {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            color: #6c757d;
+            font-style: italic;
+        }
+        
+        .results-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        
+        .timer {
+            background: white;
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px solid #43e97b;
+        }
+        
+        .timer-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #43e97b;
+        }
+        
+        .score-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+            gap: 15px;
+        }
+        
+        .score-box {
+            background: #f8f9fa;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px solid #dee2e6;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .passage-text {
+                padding: 20px;
+                font-size: 1.1rem;
+            }
+            
+            .blank-select {
+                min-width: 110px;
+                padding: 8px 12px;
+                font-size: 1rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .results-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .exam-info {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-language"></i> Grammar & Vocabulary Test</h1>
+            <p class="subtitle">ENGLISH 'CORE', GRADE 11, SEMESTER ONE, MOCK EXAM, B.B.ALL.SCHOOL(11-12) 2023/2024</p>
+            
+            <div class="exam-info">
+                <div class="info-box"><i class="fas fa-book"></i> Grammar/Vocabulary (Items 1-10)</div>
+                <div class="info-box"><i class="fas fa-star"></i> 5 marks</div>
+            </div>
+            
+            <div class="timer">
+                <div class="timer-text">⏱️ Time: <span id="time">15:00</span></div>
+            </div>
+        </header>
+        
+        <div class="instructions">
+            <p><i class="fas fa-info-circle"></i> <strong>Instructions:</strong> For each item, select the correct option to complete the passage.</p>
+            <p><i class="fas fa-lightbulb"></i> Read the entire passage first, then choose the best word or phrase for each numbered blank.</p>
+            <p><i class="fas fa-clock"></i> <strong>Time Limit:</strong> 15 minutes | <strong>Questions:</strong> 10</p>
+        </div>
+        
+        <div class="passage-container">
+            <div class="section-title"><i class="fas fa-file-alt"></i> Complete the Passage - Paper</div>
+            <div class="passage-text">
+                Paper 
+                <span class="blank">
+                    <span class="blank-number">1</span>
+                    <select class="blank-select" id="blank1">
+                        <option value="">Select</option>
+                        <option value="was">was</option>
+                        <option value="is">is</option>
+                        <option value="are">are</option>
+                        <option value="were">were</option>
+                    </select>
+                </span>
+                invented in China many years ago. Lately, people used 
+                <span class="blank">
+                    <span class="blank-number">2</span>
+                    <select class="blank-select" id="blank2">
+                        <option value="">Select</option>
+                        <option value="at">at</option>
+                        <option value="in">in</option>
+                        <option value="to">to</option>
+                        <option value="of">of</option>
+                    </select>
+                </span>
+                share information through oral traditions, spoken stories and 
+                <span class="blank">
+                    <span class="blank-number">3</span>
+                    <select class="blank-select" id="blank3">
+                        <option value="">Select</option>
+                        <option value="symbols">symbols</option>
+                        <option value="letters">letters</option>
+                        <option value="emails">emails</option>
+                        <option value="texts">texts</option>
+                    </select>
+                </span>
+                . The Chinese 
+                <span class="blank">
+                    <span class="blank-number">4</span>
+                    <select class="blank-select" id="blank4">
+                        <option value="">Select</option>
+                        <option value="used">used</option>
+                        <option value="changed">changed</option>
+                        <option value="mixed">mixed</option>
+                        <option value="made">made</option>
+                    </select>
+                </span>
+                from plants like mulberry 
+                <span class="blank">
+                    <span class="blank-number">5</span>
+                    <select class="blank-select" id="blank5">
+                        <option value="">Select</option>
+                        <option value="or">or</option>
+                        <option value="and">and</option>
+                        <option value="so">so</option>
+                        <option value="but">but</option>
+                    </select>
+                </span>
+                hemp. However, 
+                <span class="blank">
+                    <span class="blank-number">6</span>
+                    <select class="blank-select" id="blank6">
+                        <option value="">Select</option>
+                        <option value="everyone">everyone</option>
+                        <option value="everything">everything</option>
+                        <option value="everywhere">everywhere</option>
+                        <option value="nothing">nothing</option>
+                    </select>
+                </span>
+                has changed with the 
+                <span class="blank">
+                    <span class="blank-number">7</span>
+                    <select class="blank-select" id="blank7">
+                        <option value="">Select</option>
+                        <option value="traditions">traditions</option>
+                        <option value="discoveries">discoveries</option>
+                        <option value="transports">transports</option>
+                        <option value="inventions">inventions</option>
+                    </select>
+                </span>
+                of internet and social 
+                <span class="blank">
+                    <span class="blank-number">8</span>
+                    <select class="blank-select" id="blank8">
+                        <option value="">Select</option>
+                        <option value="platforms">platforms</option>
+                        <option value="activities">activities</option>
+                        <option value="skills">skills</option>
+                        <option value="works">works</option>
+                    </select>
+                </span>
+                . They are reducing the use 
+                <span class="blank">
+                    <span class="blank-number">9</span>
+                    <select class="blank-select" id="blank9">
+                        <option value="">Select</option>
+                        <option value="by">by</option>
+                        <option value="from">from</option>
+                        <option value="of">of</option>
+                        <option value="in">in</option>
+                    </select>
+                </span>
+                printing press while these technologies are leading nowadays , it's important to note that papers may not 
+                <span class="blank">
+                    <span class="blank-number">10</span>
+                    <select class="blank-select" id="blank10">
+                        <option value="">Select</option>
+                        <option value="is">is</option>
+                        <option value="was">was</option>
+                        <option value="are">are</option>
+                        <option value="be">be</option>
+                    </select>
+                </span>
+                desirable in all situations.
+            </div>
+            <div class="hint">
+                <i class="fas fa-lightbulb"></i> Tip: Pay attention to verb tenses, prepositions, and context clues in the passage.
+            </div>
+        </div>
+        
+        <div class="actions">
+            <button class="btn btn-dashboard" onclick="goToDashboard()"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
+            <button class="btn btn-reset" onclick="resetAnswers()"><i class="fas fa-redo"></i> Reset</button>
+            <button class="btn btn-check" onclick="checkAnswers()"><i class="fas fa-check-circle"></i> Submit</button>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="progress-ring">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                    <circle class="progress-ring-circle" stroke="#e9ecef" stroke-width="10" fill="transparent" r="50" cx="60" cy="60"/>
+                    <circle class="progress-ring-circle" stroke="#43e97b" stroke-width="10" fill="transparent" r="50" cx="60" cy="60" stroke-dasharray="314.159" stroke-dashoffset="314.159" id="progressCircle"/>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em" class="progress-text" id="progressText">0%</text>
+                </svg>
+            </div>
+            
+            <div class="score">Your Score: <span class="score-value" id="score-value">0</span>/10</div>
+            
+            <div class="score-info">
+                <div class="score-box">Grammar/Vocabulary Score: <span id="gr-vcb-score">0</span></div>
+            </div>
+            
+            <div class="feedback" id="feedback">Complete the exercise to see your results!</div>
+            
+            <div class="results-actions">
+                <button class="btn btn-dashboard" onclick="goToDashboard()"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
+                <button class="btn btn-results" onclick="goToResults()"><i class="fas fa-chart-bar"></i> View Results</button>
+                <button class="btn btn-reset" onclick="resetAnswers()"><i class="fas fa-redo"></i> Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Timer functionality
+        let timeLeft = 900; // 15 minutes in seconds
+        let timerInterval;
+        
+        function startTimer() {
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+        
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('time').textContent = "00:00";
+                checkAnswers(); // Auto-submit when time is up
+                alert("Time's up! Your test has been submitted automatically.");
+                return;
+            }
+            
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('time').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Change color when less than 2 minutes remain
+            if (timeLeft < 120) {
+                document.getElementById('time').style.color = "#e74c3c";
+            }
+        }
+        
+        // Correct answers for each blank (based on the image)
+        const correctAnswers = {
+            blank1: "was",
+            blank2: "to",
+            blank3: "symbols",
+            blank4: "made",
+            blank5: "and",
+            blank6: "everything",
+            blank7: "inventions",
+            blank8: "platforms",
+            blank9: "of",
+            blank10: "be"
+        };
+        
+        // Update progress circle
+        function updateProgressCircle(percentage) {
+            const circle = document.getElementById('progressCircle');
+            const text = document.getElementById('progressText');
+            const radius = 50;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (percentage / 100) * circumference;
+            
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            circle.style.strokeDashoffset = offset;
+            text.textContent = `${percentage}%`;
+        }
+        
+        // Calculate Grammar/Vocabulary Score (5 marks total, 0.5 per correct answer)
+        function calculateGrammarVocabScore(correctCount) {
+            return (correctCount * 0.5).toFixed(1);
+        }
+        
+        // Save results to localStorage
+        function saveResults(score, total) {
+            const percentage = Math.round((score / total) * 100);
+            const grammarVocabScore = calculateGrammarVocabScore(score);
+            let grade = '';
+            
+            if (percentage >= 90) grade = 'A';
+            else if (percentage >= 80) grade = 'B';
+            else if (percentage >= 70) grade = 'C';
+            else if (percentage >= 60) grade = 'D';
+            else grade = 'F';
+            
+            // Get student name from URL or use default
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentName = urlParams.get('student') || 'Guest Student';
+            
+            // Get existing results or create new array
+            const existingResults = JSON.parse(localStorage.getItem('examResults') || '[]');
+            
+            // Create new result object
+            const newResult = {
+                activity: "Grammar/Vocabulary - Paper (Mock Exam 2023/2024)",
+                date: new Date().toLocaleString(),
+                score: score,
+                total: total,
+                percentage: percentage,
+                grade: grade,
+                module: 'Grammar & Vocabulary',
+                grammarVocabScore: grammarVocabScore,
+                exam: "2023/2024 Mock Exam"
+            };
+            
+            // Add new result to beginning of array
+            existingResults.unshift(newResult);
+            
+            // Keep only last 20 results
+            if (existingResults.length > 20) {
+                existingResults.length = 20;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('examResults', JSON.stringify(existingResults));
+            
+            // Also save as a separate result for easy access
+            localStorage.setItem('mockExamGrammarVocabResult', JSON.stringify(newResult));
+            
+            // Save student name if not already saved
+            if (studentName && studentName !== 'Guest Student') {
+                localStorage.setItem('currentStudent', studentName);
+            }
+        }
+        
+        // Check answers function
+        function checkAnswers() {
+            clearInterval(timerInterval); // Stop the timer
+            
+            let correctCount = 0;
+            const totalBlanks = Object.keys(correctAnswers).length;
+            
+            // Check each blank
+            Object.keys(correctAnswers).forEach(blankId => {
+                const select = document.getElementById(blankId);
+                const userAnswer = select.value;
+                const correctAnswer = correctAnswers[blankId];
+                
+                // Reset previous styling
+                select.classList.remove('correct', 'incorrect');
+                
+                if (userAnswer === correctAnswer) {
+                    select.classList.add('correct');
+                    correctCount++;
+                } else if (userAnswer !== "") {
+                    select.classList.add('incorrect');
+                }
+            });
+            
+            // Calculate percentage and Grammar/Vocabulary score
+            const percentage = Math.round((correctCount / totalBlanks) * 100);
+            const grammarVocabScore = calculateGrammarVocabScore(correctCount);
+            
+            // Save results to localStorage
+            saveResults(correctCount, totalBlanks);
+            
+            // Show results
+            const results = document.getElementById('results');
+            const scoreValue = document.getElementById('score-value');
+            const grVcbScore = document.getElementById('gr-vcb-score');
+            const feedback = document.getElementById('feedback');
+            
+            scoreValue.textContent = correctCount;
+            grVcbScore.textContent = grammarVocabScore;
+            updateProgressCircle(percentage);
+            results.classList.add('show');
+            
+            // Provide feedback based on score
+            if (correctCount === totalBlanks) {
+                feedback.textContent = "🎉 Excellent! Perfect score! You've mastered this exercise!";
+                feedback.style.background = "#e8f5e9";
+                feedback.style.color = "#2e7d32";
+            } else if (correctCount >= totalBlanks * 0.8) {
+                feedback.textContent = "👍 Very good! You have a solid understanding of grammar and vocabulary.";
+                feedback.style.background = "#e3f2fd";
+                feedback.style.color = "#1565c0";
+            } else if (correctCount >= totalBlanks * 0.6) {
+                feedback.textContent = "💡 Good effort! Review verb tenses, prepositions, and vocabulary in context.";
+                feedback.style.background = "#fff3e0";
+                feedback.style.color = "#ef6c00";
+            } else {
+                feedback.textContent = "📚 You may need more practice with grammar and vocabulary. Pay attention to passive voice, prepositions, and word choices.";
+                feedback.style.background = "#ffebee";
+                feedback.style.color = "#c62828";
+            }
+            
+            // Scroll to results
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Reset answers function
+        function resetAnswers() {
+            // Reset all dropdowns
+            Object.keys(correctAnswers).forEach(blankId => {
+                const select = document.getElementById(blankId);
+                select.value = '';
+                select.classList.remove('correct', 'incorrect');
+            });
+            
+            // Hide results
+            document.getElementById('results').classList.remove('show');
+            updateProgressCircle(0);
+            
+            // Reset Grammar/Vocabulary score display
+            document.getElementById('gr-vcb-score').textContent = "0";
+            
+            // Reset timer
+            clearInterval(timerInterval);
+            timeLeft = 900;
+            updateTimer();
+            startTimer();
+            
+            // Reset timer color
+            document.getElementById('time').style.color = "#43e97b";
+        }
+        
+        // Go to dashboard
+        function goToDashboard() {
+            // Get student name from URL or use default
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentName = urlParams.get('student') || 'Guest Student';
+            window.location.href = "..//dashboard.html?student=" + encodeURIComponent(studentName);
+        }
+        
+        // Go to results page
+        function goToResults() {
+            // Get student name from URL or use default
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentName = urlParams.get('student') || 'Guest Student';
+            window.location.href = "Results.html?student=" + encodeURIComponent(studentName);
+        }
+        
+        // Initialize on page load
+        window.onload = function() {
+            startTimer();
+            updateProgressCircle(0);
+            
+            // Get student name from URL and update page title if available
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentName = urlParams.get('student');
+            if (studentName) {
+                document.title = `Mock Exam Grammar/Vocabulary - ${studentName}`;
+            }
+            
+            // Add event listeners to dropdowns for better UX
+            document.querySelectorAll('.blank-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    // Auto-focus next dropdown if available
+                    const nextSelect = this.parentElement.nextElementSibling?.querySelector('.blank-select');
+                    if (nextSelect) {
+                        nextSelect.focus();
+                    }
+                });
+                
+                // Allow Enter key to move to next dropdown
+                select.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const nextSelect = this.parentElement.nextElementSibling?.querySelector('.blank-select');
+                        if (nextSelect) {
+                            nextSelect.focus();
+                        }
+                    }
+                });
+            });
+            
+            // Focus on first blank
+            document.getElementById('blank1').focus();
+        };
+    </script>
+</body>
+</html>

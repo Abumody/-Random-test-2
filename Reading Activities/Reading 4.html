@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension - Teen Mobile Phone Usage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1000px;
+            width: 100%;
+        }
+        
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fad0c4, #a1c4fd);
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .instructions p {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .instructions i {
+            margin-right: 10px;
+            color: #1e3c72;
+        }
+        
+        .reading-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 12px;
+            color: #1e3c72;
+            font-size: 1.8rem;
+        }
+        
+        .reading-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #1e3c72;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .reading-text p {
+            margin-bottom: 15px;
+        }
+        
+        .questions-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #3498db;
+            transition: transform 0.3s ease;
+        }
+        
+        .question:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .question-number {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #495057;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .question-number::before {
+            content: '';
+            display: inline-block;
+            width: 26px;
+            height: 26px;
+            background: #3498db;
+            border-radius: 50%;
+            margin-right: 10px;
+            color: white;
+            text-align: center;
+            line-height: 26px;
+            font-size: 0.9rem;
+        }
+        
+        .question:nth-child(1) .question-number::before { content: ''; }
+        .question:nth-child(2) .question-number::before { content: ''; }
+        .question:nth-child(3) .question-number::before { content: ''; }
+        .question:nth-child(4) .question-number::before { content: ''; }
+        .question:nth-child(5) .question-number::before { content: ''; }
+        .question:nth-child(6) .question-number::before { content: ''; }
+        .question:nth-child(7) .question-number::before { content: ''; }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08);
+            border-color: #adb5bd;
+        }
+        
+        .option.selected {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
+        }
+        
+        .option.correct {
+            background-color: #e8f5e9;
+            border-color: #4caf50;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.2);
+        }
+        
+        .option.incorrect {
+            background-color: #ffebee;
+            border-color: #f44336;
+            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.2);
+        }
+        
+        .bubble {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #adb5bd;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .option.selected .bubble {
+            border-color: #2196f3;
+            background-color: #2196f3;
+        }
+        
+        .option.correct .bubble {
+            border-color: #4caf50;
+            background-color: #4caf50;
+        }
+        
+        .option.incorrect .bubble {
+            border-color: #f44336;
+            background-color: #f44336;
+        }
+        
+        .bubble::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        
+        .option-text {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-check {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+        }
+        
+        .btn-reset {
+            background: linear-gradient(135deg, #ff9800, #ef6c00);
+            color: white;
+        }
+        
+        .btn-back {
+            background: linear-gradient(135deg, #2196f3, #0d47a1);
+            color: white;
+        }
+        
+        .results {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .score {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+        
+        .score-value {
+            color: #1e3c72;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .feedback {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        
+        .progress-ring {
+            margin: 0 auto 20px;
+            width: 120px;
+            height: 120px;
+        }
+        
+        .progress-ring-circle {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .progress-text {
+            font-size: 1.8rem;
+            font-weight: bold;
+            fill: #1e3c72;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .reading-text {
+                max-height: 300px;
+                font-size: 1rem;
+                padding: 20px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-mobile-alt"></i> Reading Comprehension</h1>
+            <p class="subtitle">G. 11 Sem I 1st Session 2023-2024</p>
+        </header>
+        
+        <div class="instructions">
+            <p><i class="fas fa-info-circle"></i> <strong>Instructions:</strong> Read the text carefully. Then, for each item, select the correct option.</p>
+            <p><i class="fas fa-lightbulb"></i> Pay attention to details and specific information in the text.</p>
+        </div>
+        
+        <div class="reading-container">
+            <div class="section-title"><i class="fas fa-scroll"></i> Teen Mobile Phone Usage</div>
+            <div class="reading-text">
+                <p>Allowing teens to have mobile phone is one of the recent provoking debates around the world. Despite the good impact of mobile phone in people's life, mobile addiction is a real problem and a cause of great concern especially for teenagers.</p>
+                
+                <p>There is no doubt that smartphone can be beneficial for teens as they use it to connect with peers, seek help on school assignments and help them get organized. According to the survey conducted in the United States, 31% of the teen students use their smart phones to do their homework and assignments. Since teens face intense levels of pressure, mobile phone use can help them relieve stress through spending time expressing their ideas and thoughts in various topics of their interest.</p>
+                
+                <p>On the other hand, excessive use of mobiles causes mental health issues. For example, anxiety can result due to the time wasted on the phone. This causes stress because the teens now lack time to complete their schoolwork. Another common bad effect of smartphone use that it interferes teens normal sleep routine. It causes Insomnia or sleep disturbances related to frequent checking. This leads to major changes in their mood and behaviour. Furthermore, recent studies revealed that spending too much time using mobile phones by teens affects their relationships with their parents and causes a lack in communication, which leads to conflicts.</p>
+                
+                <p>According to recent studies, teenagers have the highest rate of mobile phone addiction. They spend an average of nine hours a day on their smartphones, which means two hours more than the normal sleeping hours. Moreover, 50% of teenagers feel that they are addicted to their phones. Pew Research Report in 2018 showed that 45% of teens use the Internet "almost constantly." Based on this report, 50% of teenage girls are "near-constant" online users, compared to 39% of teenage boys. Overall, 66% of teenagers feel bad-tempered when they do not have their smartphones.</p>
+                
+                <p>Another study, titled "The New Normal: Parents, Teens and Mobile Devices in Mexico," was conducted by the University of Southern California found that in Mexico, 45% of teens said they spend too much time on their mobile devices, compared with 39% in the United States, 32% in the United Kingdom and 17% in Japan.</p>
+                
+                <p>Finally, it is important to educate teens on how to use smartphones wisely to create and maintain a healthy balance. Parents can help limit their teen's cell phone use in several ways. Parents can set rules and remind their teens that having a phone is a privilege, not a right.</p>
+            </div>
+        </div>
+        
+        <div class="questions-container">
+            <div class="section-title"><i class="fas fa-tasks"></i> Questions</div>
+            
+            <div class="question" data-correct="health and social effects">
+                <div class="question-number">1. Mobile addiction causes great ______ on teenagers' life.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">health and social effects</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">social effects only</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">health effects only</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="inconstant sleeping">
+                <div class="question-number">2. Excessive use of mobile phones at night leads to Insomnia, which is ______.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">sleeping routine</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">normal sleeping hours</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">inconstant sleeping</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="use smart phone for studying">
+                <div class="question-number">3. 31% of teen students say that they ______.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">are addicted to phones</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">use smart phone for studying</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">have conflicts with parents</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="66%">
+                <div class="question-number">4. According to studies, ______ of teenagers feel nervous without smart phones.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">39%</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">45%</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">66%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="more than">
+                <div class="question-number">5. Based on Pew Research, teen girls use mobile phones ______ teen boys.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">more than</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">less than</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">same as</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="Mexico">
+                <div class="question-number">6. In USA, teenagers use mobile phone less than teenagers in ______.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">Japan</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">United Kingdom</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">Mexico</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="limit">
+                <div class="question-number">7. The writer believes that parents should ______ the use of mobile phones by teens.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">limit</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">forbid</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">allow</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <button class="btn btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back to Main</button>
+            <button class="btn btn-reset" onclick="resetAnswers()"><i class="fas fa-redo"></i> Reset Answers</button>
+            <button class="btn btn-check" onclick="checkAnswers()"><i class="fas fa-check-circle"></i> Check Answers</button>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="progress-ring">
+                <svg width="120" height="120" viewBox="0 0 120 120">
+                    <circle class="progress-ring-circle" stroke="#e9ecef" stroke-width="10" fill="transparent" r="50" cx="60" cy="60"/>
+                    <circle class="progress-ring-circle" stroke="#1e3c72" stroke-width="10" fill="transparent" r="50" cx="60" cy="60" stroke-dasharray="314.159" stroke-dashoffset="314.159" id="progressCircle"/>
+                    <text x="50%" y="50%" text-anchor="middle" dy=".3em" class="progress-text" id="progressText">0%</text>
+                </svg>
+            </div>
+            <div class="score">Your Score: <span class="score-value" id="score-value">0</span>/7</div>
+            <div class="feedback" id="feedback">Complete the exercise to see your results!</div>
+            <button class="btn btn-reset" onclick="resetAnswers()"><i class="fas fa-redo"></i> Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Add click event to options
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options in this question
+                const question = this.closest('.question');
+                question.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+            });
+        });
+        
+        // Update progress circle
+        function updateProgressCircle(percentage) {
+            const circle = document.getElementById('progressCircle');
+            const text = document.getElementById('progressText');
+            const radius = 50;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (percentage / 100) * circumference;
+            
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            circle.style.strokeDashoffset = offset;
+            text.textContent = `${percentage}%`;
+        }
+        
+        // Check answers function
+        function checkAnswers() {
+            let correctCount = 0;
+            const totalQuestions = document.querySelectorAll('.question').length;
+            
+            document.querySelectorAll('.question').forEach(question => {
+                const correctAnswer = question.getAttribute('data-correct');
+                const selectedOption = question.querySelector('.option.selected');
+                
+                // Reset previous correct/incorrect classes
+                question.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect');
+                });
+                
+                if (selectedOption) {
+                    const selectedAnswer = selectedOption.querySelector('.option-text').textContent;
+                    
+                    if (selectedAnswer === correctAnswer) {
+                        selectedOption.classList.add('correct');
+                        correctCount++;
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        
+                        // Highlight the correct answer
+                        question.querySelectorAll('.option').forEach(opt => {
+                            if (opt.querySelector('.option-text').textContent === correctAnswer) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+                } else {
+                    // If no answer selected, show correct answer
+                    question.querySelectorAll('.option').forEach(opt => {
+                        if (opt.querySelector('.option-text').textContent === correctAnswer) {
+                            opt.classList.add('correct');
+                        }
+                    });
+                }
+            });
+            
+            // Calculate percentage
+            const percentage = Math.round((correctCount / totalQuestions) * 100);
+            
+            // Show results
+            const results = document.getElementById('results');
+            const scoreValue = document.getElementById('score-value');
+            const feedback = document.getElementById('feedback');
+            
+            scoreValue.textContent = correctCount;
+            updateProgressCircle(percentage);
+            results.classList.add('show');
+            
+            // Provide feedback based on score
+            if (correctCount === totalQuestions) {
+                feedback.textContent = "🎉 Excellent! Perfect score! You've mastered this reading exercise!";
+                feedback.style.background = "#e8f5e9";
+                feedback.style.color = "#2e7d32";
+            } else if (correctCount >= totalQuestions * 0.7) {
+                feedback.textContent = "👍 Good job! You did well on this reading exercise.";
+                feedback.style.background = "#e3f2fd";
+                feedback.style.color = "#1565c0";
+            } else if (correctCount >= totalQuestions * 0.5) {
+                feedback.textContent = "💡 Not bad, but you might want to read the text more carefully.";
+                feedback.style.background = "#fff3e0";
+                feedback.style.color = "#ef6c00";
+            } else {
+                feedback.textContent = "📚 You may need more practice with reading comprehension. Try reading the text again.";
+                feedback.style.background = "#ffebee";
+                feedback.style.color = "#c62828";
+            }
+            
+            // Scroll to results
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Reset answers function
+        function resetAnswers() {
+            // Reset all options
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Hide results
+            document.getElementById('results').classList.remove('show');
+            updateProgressCircle(0);
+        }
+        
+        // Go back to main page function
+        function goBack() {
+            window.location.href = "../dashboard.html";
+        }
+        
+        // Initialize progress circle
+        updateProgressCircle(0);
+    </script>
+</body>
+</html>

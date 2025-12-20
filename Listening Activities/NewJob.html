@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listening 11 - New Job Conversation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .instructions {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .instructions p {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .audio-player {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .audio-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .audio-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn-play {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-play:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+        
+        .btn-play.playing {
+            background: #2ecc71;
+        }
+        
+        .btn-play.playing:hover {
+            background: #27ae60;
+        }
+        
+        .progress-container {
+            flex-grow: 1;
+            background: #ecf0f1;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: #e74c3c;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        .time-display {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            min-width: 100px;
+            text-align: center;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .volume-slider {
+            width: 80px;
+        }
+        
+        .question-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question:last-child {
+            border-bottom: none;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .option:hover {
+            background-color: #f9f9f9;
+            border-color: #bdc3c7;
+        }
+        
+        .option.selected {
+            background-color: #e8f4fd;
+            border-color: #3498db;
+        }
+        
+        .option.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .option.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+        }
+        
+        .bubble {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #bdc3c7;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .option.selected .bubble {
+            border-color: #3498db;
+            background-color: #3498db;
+        }
+        
+        .option.correct .bubble {
+            border-color: #28a745;
+            background-color: #28a745;
+        }
+        
+        .option.incorrect .bubble {
+            border-color: #dc3545;
+            background-color: #dc3545;
+        }
+        
+        .bubble::after {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        
+        .option-text {
+            font-size: 1rem;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .btn-check {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+        }
+        
+        .btn-check:hover {
+            background-color: #27ae60;
+            transform: translateY(-2px);
+        }
+        
+        .btn-reset {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+        }
+        
+        .btn-reset:hover {
+            background-color: #7f8c8d;
+            transform: translateY(-2px);
+        }
+        
+        .btn-back {
+            background-color: #3498db;
+            color: white;
+            border: none;
+        }
+        
+        .btn-back:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .results {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .score-value {
+            color: #e74c3c;
+            font-size: 2rem;
+        }
+        
+        .feedback {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .vocabulary-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #3498db;
+        }
+        
+        .vocabulary-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .vocabulary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .vocab-item {
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 3px solid #e74c3c;
+        }
+        
+        .vocab-english {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .vocab-arabic {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.7rem;
+            }
+            
+            .audio-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .progress-container {
+                width: 100%;
+            }
+            
+            .actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .vocabulary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LISTENING 11 (Items 1 - 7)</h1>
+            <p class="subtitle">G. 11 Sem I 2nd Session 2017-2018</p>
+        </header>
+        
+        <div class="instructions">
+            <p>You are going to hear a conversation between two friends talking about a new job.</p>
+            <p><strong>Listen to the audio, then select the correct option for each question.</strong></p>
+        </div>
+        
+        <div class="audio-player">
+            <div class="audio-title">Conversation: Talking About a New Job</div>
+            <div class="audio-controls">
+                <button class="btn-play" id="playBtn">▶</button>
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
+                <div class="volume-control">
+                    <span>🔊</span>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+                </div>
+            </div>
+            <!-- AUDIO FILE - REPLACE THE SOURCE WITH YOUR ACTUAL AUDIO FILE -->
+            <audio id="audioPlayer" preload="metadata">
+                <source src="Audio/Grade 11 File 11 T1 T.Auf.mp3" type="audio/mpeg">
+                <source src="listening-exercise-11.wav" type="audio/wav">
+                <source src="listening-exercise-11.ogg" type="audio/ogg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        
+        <div class="question-container">
+            <div class="question" data-correct="tour guide">
+                <div class="question-number">1. Diana's job is a ______.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">manager</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">tour guide</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">receptionist</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="bus">
+                <div class="question-number">2. The tourists travelled to the canyon by ______.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">car</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">train</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">bus</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="tired">
+                <div class="question-number">3. Some of the tourists stayed at the hotel that day because they were ______.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">tired</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">ill</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">not interested</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="colleague">
+                <div class="question-number">4. Mark is Diana's ______.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">friend</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">leader</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">colleague</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="likes">
+                <div class="question-number">5. Diana ______ her job.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">likes</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">criticises</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">hates</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="met the leader">
+                <div class="question-number">6. When Diana arrived back in the hotel, she ______.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">had a sandwich</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">met the leader</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">slept</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question" data-correct="museum">
+                <div class="question-number">7. Next day, the tourists will visit the ______ in the morning.</div>
+                <div class="options">
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">aquarium</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">museum</div>
+                    </div>
+                    <div class="option">
+                        <div class="bubble"></div>
+                        <div class="option-text">aquarium and the museum</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="vocabulary-section">
+            <div class="vocabulary-title">Vocabulary Help</div>
+            <div class="vocabulary-grid">
+                <div class="vocab-item">
+                    <div class="vocab-english">receptionist</div>
+                    <div class="vocab-arabic">موظف الاستقبال</div>
+                </div>
+                <div class="vocab-item">
+                    <div class="vocab-english">aquarium</div>
+                    <div class="vocab-arabic">حوض الأسماك</div>
+                </div>
+                <div class="vocab-item">
+                    <div class="vocab-english">canyon</div>
+                    <div class="vocab-arabic">واد عميق</div>
+                </div>
+                <div class="vocab-item">
+                    <div class="vocab-english">colleague</div>
+                    <div class="vocab-arabic">زميل</div>
+                </div>
+                <div class="vocab-item">
+                    <div class="vocab-english">exhausted</div>
+                    <div class="vocab-arabic">منهك</div>
+                </div>
+                <div class="vocab-item">
+                    <div class="vocab-english">grab</div>
+                    <div class="vocab-arabic">ينتزع أو يمسك بـ</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <button class="btn btn-back" onclick="goBack()">Back to Listening Activities</button>
+            <button class="btn btn-reset" onclick="resetAnswers()">Reset Answers</button>
+            <button class="btn btn-check" onclick="checkAnswers()">Check Answers</button>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="score">Your Score: <span class="score-value" id="score-value">0</span>/7</div>
+            <div class="feedback" id="feedback"></div>
+            <button class="btn btn-reset" onclick="resetAnswers()">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAudioPlayer();
+            initializeQuestionHandlers();
+        });
+
+        // Audio Player Functions
+        function initializeAudioPlayer() {
+            const audio = document.getElementById('audioPlayer');
+            const playBtn = document.getElementById('playBtn');
+            const progressBar = document.getElementById('progressBar');
+            const progressContainer = document.getElementById('progressContainer');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const volumeSlider = document.getElementById('volumeSlider');
+
+            if (!audio || !playBtn) return;
+
+            // Format time as minutes:seconds
+            function formatTime(seconds) {
+                if (isNaN(seconds)) return "0:00";
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            // Update time display
+            function updateTimeDisplay() {
+                if (audio.duration && !isNaN(audio.duration)) {
+                    timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+                } else {
+                    timeDisplay.textContent = `${formatTime(audio.currentTime)} / 0:00`;
+                }
+            }
+
+            // Update progress bar
+            function updateProgress() {
+                if (audio.duration && !isNaN(audio.duration)) {
+                    const progressPercent = (audio.currentTime / audio.duration) * 100;
+                    progressBar.style.width = `${progressPercent}%`;
+                }
+                updateTimeDisplay();
+            }
+
+            // Set progress bar when clicked
+            function setProgress(e) {
+                if (!audio.duration || isNaN(audio.duration)) return;
+                
+                const width = this.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                
+                audio.currentTime = (clickX / width) * duration;
+            }
+
+            // Toggle play/pause
+            function togglePlay() {
+                if (audio.paused) {
+                    audio.play().catch(error => {
+                        console.error("Audio play failed:", error);
+                        alert("Unable to play audio. Please check if the audio file exists.");
+                    });
+                    playBtn.textContent = '⏸';
+                    playBtn.classList.add('playing');
+                } else {
+                    audio.pause();
+                    playBtn.textContent = '▶';
+                    playBtn.classList.remove('playing');
+                }
+            }
+
+            // Update volume
+            function setVolume() {
+                audio.volume = volumeSlider.value;
+            }
+
+            // Event listeners
+            playBtn.addEventListener('click', togglePlay);
+            audio.addEventListener('timeupdate', updateProgress);
+            audio.addEventListener('ended', function() {
+                playBtn.textContent = '▶';
+                playBtn.classList.remove('playing');
+            });
+            audio.addEventListener('loadedmetadata', updateTimeDisplay);
+            audio.addEventListener('error', function() {
+                console.error("Audio loading error");
+                timeDisplay.textContent = "Audio Error";
+            });
+            
+            if (progressContainer) {
+                progressContainer.addEventListener('click', setProgress);
+            }
+            
+            if (volumeSlider) {
+                volumeSlider.addEventListener('input', setVolume);
+            }
+
+            // Initial setup
+            updateTimeDisplay();
+        }
+
+        // Question Handling Functions
+        function initializeQuestionHandlers() {
+            // Add click event to options
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options in this question
+                    const question = this.closest('.question');
+                    question.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                });
+            });
+        }
+
+        // Check answers function
+        function checkAnswers() {
+            let correctCount = 0;
+            const totalQuestions = document.querySelectorAll('.question').length;
+            
+            document.querySelectorAll('.question').forEach(question => {
+                const correctAnswer = question.getAttribute('data-correct');
+                const selectedOption = question.querySelector('.option.selected');
+                
+                // Reset previous correct/incorrect classes
+                question.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect');
+                });
+                
+                if (selectedOption) {
+                    const selectedAnswer = selectedOption.querySelector('.option-text').textContent;
+                    
+                    if (selectedAnswer === correctAnswer) {
+                        selectedOption.classList.add('correct');
+                        correctCount++;
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        
+                        // Highlight the correct answer
+                        question.querySelectorAll('.option').forEach(opt => {
+                            if (opt.querySelector('.option-text').textContent === correctAnswer) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+                } else {
+                    // If no answer selected, show correct answer
+                    question.querySelectorAll('.option').forEach(opt => {
+                        if (opt.querySelector('.option-text').textContent === correctAnswer) {
+                            opt.classList.add('correct');
+                        }
+                    });
+                }
+            });
+            
+            // Show results
+            const results = document.getElementById('results');
+            const scoreValue = document.getElementById('score-value');
+            const feedback = document.getElementById('feedback');
+            
+            if (results && scoreValue && feedback) {
+                scoreValue.textContent = correctCount;
+                results.classList.add('show');
+                
+                // Provide feedback based on score
+                if (correctCount === totalQuestions) {
+                    feedback.textContent = "Excellent! You got all answers correct!";
+                } else if (correctCount >= totalQuestions * 0.7) {
+                    feedback.textContent = "Good job! You did well on this exercise.";
+                } else if (correctCount >= totalQuestions * 0.5) {
+                    feedback.textContent = "Not bad, but you might want to review the material.";
+                } else {
+                    feedback.textContent = "You may need more practice with this topic.";
+                }
+                
+                // Scroll to results
+                results.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        
+        // Reset answers function
+        function resetAnswers() {
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Hide results
+            const results = document.getElementById('results');
+            if (results) {
+                results.classList.remove('show');
+            }
+        }
+
+        // Go back function
+        function goBack() {
+            // Navigate back to listening activities page
+            window.location.href = "../dashboard.html";
+        }
+    </script>
+</body>
+</html>

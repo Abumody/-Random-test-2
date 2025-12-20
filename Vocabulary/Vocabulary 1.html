@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Test - Grade 11A Theme 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background: linear-gradient(135deg, #9c27b0, #7b1fa2);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .instructions {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #9c27b0;
+        }
+        
+        .instructions p {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .vocabulary-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #9c27b0;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question:last-child {
+            border-bottom: none;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .sentence {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+        
+        .blank-input {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 5px;
+        }
+        
+        .blank-input strong {
+            color: #9c27b0;
+        }
+        
+        .blank-input input {
+            width: 30px;
+            height: 35px;
+            text-align: center;
+            font-size: 1.1rem;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            margin: 0 2px;
+            text-transform: lowercase;
+        }
+        
+        .blank-input input:focus {
+            outline: none;
+            border-color: #9c27b0;
+            box-shadow: 0 0 5px rgba(156, 39, 176, 0.5);
+        }
+        
+        .blank-input input.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        
+        .blank-input input.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        
+        .hint {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .hint.show {
+            display: block;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-check {
+            background-color: #9c27b0;
+            color: white;
+        }
+        
+        .btn-check:hover {
+            background-color: #7b1fa2;
+        }
+        
+        .btn-reset {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-dashboard {
+            background-color: #9c27b0;
+            color: white;
+        }
+        
+        .btn-dashboard:hover {
+            background-color: #7b1fa2;
+        }
+        
+        .btn-hint {
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        .btn-hint:hover {
+            background-color: #5a6268;
+        }
+        
+        .results {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .score-value {
+            color: #9c27b0;
+            font-size: 2rem;
+        }
+        
+        .feedback {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .timer {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            border: 2px solid #9c27b0;
+        }
+        
+        .timer-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #9c27b0;
+        }
+        
+        .prepared-by {
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.7rem;
+            }
+            
+            .blank-input input {
+                width: 25px;
+                height: 30px;
+                font-size: 1rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VOCABULARY TEST</h1>
+            <p class="subtitle">Grade 11A - Theme 2 - Unit 1</p>
+        </header>
+        
+        <div class="timer" id="timer">
+            <div class="timer-text">Time: <span id="time">10:00</span></div>
+        </div>
+        
+        <div class="instructions">
+            <p><strong>Instructions:</strong> For each item, read the definition and the example. Then complete the word in the space provided.</p>
+            <p>You are given the first letter(s) of the word. Type one letter in each box. Use lowercase letters only.</p>
+            <p><strong>Total Questions:</strong> 14 | <strong>Time Limit:</strong> 10 minutes</p>
+        </div>
+        
+        <div class="vocabulary-section">
+            <div class="section-title">Complete the Vocabulary Words</div>
+            
+            <!-- Question 1 -->
+            <div class="question" data-correct="ager">
+                <div class="question-number">1.</div>
+                <div class="sentence">
+                    (noun) Boys or girls between thirteen and nineteen of age<br>
+                    e.g. <span class="blank-input"><strong>Teen</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"><input type="text" maxlength="1" data-index="3"></span> complain that parents are critical and suspicious.
+                </div>
+                <button class="btn-hint" onclick="showHint(1)">Show Hint</button>
+                <div class="hint" id="hint1">Hint: A person in their teenage years</div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question" data-correct="ne">
+                <div class="question-number">2.</div>
+                <div class="sentence">
+                    (noun) red spot in your face and neck<br>
+                    e.g. As a teenager, sometimes you get <span class="blank-input"><strong>ac</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"></span>.
+                </div>
+                <button class="btn-hint" onclick="showHint(2)">Show Hint</button>
+                <div class="hint" id="hint2">Hint: Common skin condition during puberty</div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question" data-correct="icious">
+                <div class="question-number">3.</div>
+                <div class="sentence">
+                    (adjective) feeling that someone has done something wrong, illegal or dishonest<br>
+                    e.g. They became <span class="blank-input"><strong>susp</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"><input type="text" maxlength="1" data-index="3"><input type="text" maxlength="1" data-index="4"><input type="text" maxlength="1" data-index="5"></span> of his behaviour and called the police.
+                </div>
+                <button class="btn-hint" onclick="showHint(3)">Show Hint</button>
+                <div class="hint" id="hint3">Hint: Means "distrustful" or "doubtful"</div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question" data-correct="sition">
+                <div class="question-number">4.</div>
+                <div class="sentence">
+                    (noun) the process of changing from one state to another<br>
+                    e.g. The <span class="blank-input"><strong>tran</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"><input type="text" maxlength="1" data-index="3"><input type="text" maxlength="1" data-index="4"><input type="text" maxlength="1" data-index="5"></span> from being a child to be a teenager is very important.
+                </div>
+                <button class="btn-hint" onclick="showHint(4)">Show Hint</button>
+                <div class="hint" id="hint4">Hint: Means "change" or "conversion"</div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question" data-correct="tical">
+                <div class="question-number">5.</div>
+                <div class="sentence">
+                    (adjective) expressing disapproval<br>
+                    e.g. Our parents are always very <span class="blank-input"><strong>cri</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"><input type="text" maxlength="1" data-index="3"><input type="text" maxlength="1" data-index="4"></span> of our actions.
+                </div>
+                <button class="btn-hint" onclick="showHint(5)">Show Hint</button>
+                <div class="hint" id="hint5">Hint: Means "fault-finding" or "judgmental"</div>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="question" data-correct="scent">
+                <div class="question-number">6.</div>
+                <div class="sentence">
+                    (noun) a young person who is developing into an adult<br>
+                    e.g. When I was an <span class="blank-input"><strong>adole</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"><input type="text" maxlength="1" data-index="3"><input type="text" maxlength="1" data-index="4"></span>, I suffered badly from acne.
+                </div>
+                <button class="btn-hint" onclick="showHint(6)">Show Hint</button>
+                <div class="hint" id="hint6">Hint: A teenager or young person</div>
+            </div>
+            
+            <!-- Question 7 -->
+            <div class="question" data-correct="ang">
+                <div class="question-number">7.</div>
+                <div class="sentence">
+                    (verb) to spend time with friends<br>
+                    e.g. Teenagers like to <span class="blank-input"><strong>h</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"></span> out with their friends in restaurants.
+                </div>
+                <button class="btn-hint" onclick="showHint(7)">Show Hint</button>
+                <div class="hint" id="hint7">Hint: Means "socialize" or "spend time together"</div>
+            </div>
+            
+            <!-- Question 8 -->
+            <div class="question" data-correct="lict">
+                <div class="question-number">8.</div>
+                <div class="sentence">
+                    (noun) disagreement or argument<br>
+                    e.g. He found himself in <span class="blank-input"><strong>conf</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"><input type="text" maxlength="1" data-index="3"></span> with his parents over his friends.
+                </div>
+                <button class="btn-hint" onclick="showHint(8)">Show Hint</button>
+                <div class="hint" id="hint8">Hint: Means "disagreement" or "clash"</div>
+            </div>
+            
+            <!-- Question 9 -->
+            <div class="question" data-correct="urt">
+                <div class="question-number">9.</div>
+                <div class="sentence">
+                    (noun) a sudden increase in speed<br>
+                    e.g. Babies get very hungry during growth <span class="blank-input"><strong>sp</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"></span>.
+                </div>
+                <button class="btn-hint" onclick="showHint(9)">Show Hint</button>
+                <div class="hint" id="hint9">Hint: Means "burst" or "sudden increase"</div>
+            </div>
+            
+            <!-- Question 10 -->
+            <div class="question" data-correct="sical">
+                <div class="question-number">10.</div>
+                <div class="sentence">
+                    (adjective) related to the body<br>
+                    e.g. Smoking has a very bad effect on your <span class="blank-input"><strong>phy</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"><input type="text" maxlength="1" data-index="3"><input type="text" maxlength="1" data-index="4"></span> health.
+                </div>
+                <button class="btn-hint" onclick="showHint(10)">Show Hint</button>
+                <div class="hint" id="hint10">Hint: Means "bodily" or "corporeal"</div>
+            </div>
+            
+            <!-- Question 11 -->
+            <div class="question" data-correct="ssful">
+                <div class="question-number">11.</div>
+                <div class="sentence">
+                    (adjective) causing a lot of worry<br>
+                    e.g. He works in a job that is very <span class="blank-input"><strong>stre</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"><input type="text" maxlength="1" data-index="3"><input type="text" maxlength="1" data-index="4"></span> and tiring.
+                </div>
+                <button class="btn-hint" onclick="showHint(11)">Show Hint</button>
+                <div class="hint" id="hint11">Hint: Means "anxiety-producing" or "pressure-filled"</div>
+            </div>
+            
+            <!-- Question 12 -->
+            <div class="question" data-correct="ntal">
+                <div class="question-number">12.</div>
+                <div class="sentence">
+                    (adjective) related to the mind<br>
+                    e.g. The hormonal changes going on in adolescents cause <span class="blank-input"><strong>me</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"><input type="text" maxlength="1" data-index="3"></span> changes.
+                </div>
+                <button class="btn-hint" onclick="showHint(12)">Show Hint</button>
+                <div class="hint" id="hint12">Hint: Means "psychological" or "cognitive"</div>
+            </div>
+            
+            <!-- Question 13 -->
+            <div class="question" data-correct="urity">
+                <div class="question-number">13.</div>
+                <div class="sentence">
+                    (noun) feeling of safety<br>
+                    e.g. Although teenagers feel they are independent, they still need their parent's <span class="blank-input"><strong>sec</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"><input type="text" maxlength="1" data-index="3"><input type="text" maxlength="1" data-index="4"></span>.
+                </div>
+                <button class="btn-hint" onclick="showHint(13)">Show Hint</button>
+                <div class="hint" id="hint13">Hint: Means "safety" or "protection"</div>
+            </div>
+            
+            <!-- Question 14 -->
+            <div class="question" data-correct="mone">
+                <div class="question-number">14.</div>
+                <div class="sentence">
+                    (noun) chemical substances produced in the body<br>
+                    e.g. Most of changes in our bodies cause by <span class="blank-input"><strong>hor</strong><input type="text" maxlength="1" data-index="0"><input type="text" maxlength="1" data-index="1"><input type="text" maxlength="1" data-index="2"><input type="text" maxlength="1" data-index="3"></span>.
+                </div>
+                <button class="btn-hint" onclick="showHint(14)">Show Hint</button>
+                <div class="hint" id="hint14">Hint: Chemical messengers in the body</div>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <button class="btn btn-dashboard" onclick="goToDashboard()">Back to Dashboard</button>
+            <button class="btn btn-reset" onclick="resetAnswers()">Reset Answers</button>
+            <button class="btn btn-check" onclick="checkAnswers()">Submit Test</button>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="score">Your Score: <span class="score-value" id="score-value">0</span>/14</div>
+            <div class="feedback" id="feedback"></div>
+            <div style="margin-top: 20px;">
+                <button class="btn btn-dashboard" onclick="goToResults()">View Detailed Results</button>
+                <button class="btn btn-reset" style="margin-left: 10px;" onclick="resetAnswers()">Try Again</button>
+            </div>
+        </div>
+        
+        <div class="prepared-by">
+            <p>designed by / Waseem.S.S.A</p>
+        </div>
+    </div>
+
+    <script>
+        // Timer functionality
+        let timeLeft = 600; // 10 minutes in seconds
+        let timerInterval;
+        
+        function startTimer() {
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+        
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('time').textContent = "00:00";
+                checkAnswers(); // Auto-submit when time is up
+                alert("Time's up! Your test has been submitted automatically.");
+                return;
+            }
+            
+            timeLeft--;
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('time').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Change color when less than 2 minutes remain
+            if (timeLeft < 120) {
+                document.getElementById('time').style.color = "#e74c3c";
+            }
+        }
+        
+        // Show hint function
+        function showHint(questionNumber) {
+            const hint = document.getElementById(`hint${questionNumber}`);
+            hint.classList.toggle('show');
+        }
+        
+        // Auto-focus next input
+        document.querySelectorAll('.blank-input input').forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value.length === this.maxLength) {
+                    const inputs = this.parentElement.querySelectorAll('input');
+                    const currentIndex = Array.from(inputs).indexOf(this);
+                    if (currentIndex < inputs.length - 1) {
+                        inputs[currentIndex + 1].focus();
+                    }
+                }
+            });
+            
+            // Allow moving with arrow keys
+            input.addEventListener('keydown', function(e) {
+                const inputs = this.parentElement.querySelectorAll('input');
+                const currentIndex = Array.from(inputs).indexOf(this);
+                
+                if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                    inputs[currentIndex - 1].focus();
+                } else if (e.key === 'ArrowRight' && currentIndex < inputs.length - 1) {
+                    inputs[currentIndex + 1].focus();
+                }
+            });
+        });
+        
+        // Check answers function
+        function checkAnswers() {
+            clearInterval(timerInterval); // Stop the timer
+            
+            let correctCount = 0;
+            const totalQuestions = document.querySelectorAll('.question').length;
+            
+            document.querySelectorAll('.question').forEach((question, index) => {
+                const questionNumber = index + 1;
+                const inputs = question.querySelectorAll('.blank-input input');
+                
+                // Skip if no inputs (shouldn't happen)
+                if (inputs.length === 0) return;
+                
+                // Build user's answer
+                let userAnswer = '';
+                inputs.forEach(input => {
+                    userAnswer += input.value.toLowerCase();
+                });
+                
+                // Reset previous correct/incorrect classes
+                inputs.forEach(input => {
+                    input.classList.remove('correct', 'incorrect');
+                });
+                
+                const correctAnswer = question.getAttribute('data-correct') || '';
+                
+                if (userAnswer === correctAnswer) {
+                    // All correct
+                    inputs.forEach(input => {
+                        input.classList.add('correct');
+                    });
+                    correctCount++;
+                } else if (correctAnswer) {
+                    // Some incorrect - highlight individual letters
+                    for (let i = 0; i < Math.min(userAnswer.length, correctAnswer.length); i++) {
+                        if (userAnswer[i] === correctAnswer[i]) {
+                            inputs[i].classList.add('correct');
+                        } else {
+                            inputs[i].classList.add('incorrect');
+                        }
+                    }
+                    
+                    // Mark remaining inputs as incorrect if user didn't fill them
+                    for (let i = userAnswer.length; i < correctAnswer.length; i++) {
+                        if (inputs[i]) {
+                            inputs[i].classList.add('incorrect');
+                        }
+                    }
+                }
+            });
+            
+            // Save results to localStorage
+            saveResults(correctCount, totalQuestions);
+            
+            // Show results
+            const results = document.getElementById('results');
+            const scoreValue = document.getElementById('score-value');
+            const feedback = document.getElementById('feedback');
+            
+            scoreValue.textContent = correctCount;
+            results.classList.add('show');
+            
+            // Provide feedback based on score
+            const percentage = Math.round((correctCount / totalQuestions) * 100);
+            let grade = '';
+            
+            if (percentage >= 90) {
+                feedback.textContent = "Excellent! You have mastered adolescent development vocabulary!";
+                grade = 'A';
+            } else if (percentage >= 80) {
+                feedback.textContent = "Very good! You have a strong knowledge of adolescent vocabulary.";
+                grade = 'B';
+            } else if (percentage >= 70) {
+                feedback.textContent = "Good job! You understand most of the adolescent vocabulary.";
+                grade = 'C';
+            } else if (percentage >= 60) {
+                feedback.textContent = "Not bad, but you might want to review some adolescent terms.";
+                grade = 'D';
+            } else {
+                feedback.textContent = "You may need more practice with adolescent development vocabulary.";
+                grade = 'F';
+            }
+            
+            // Scroll to results
+            results.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Save results to localStorage
+        function saveResults(score, total) {
+            const percentage = Math.round((score / total) * 100);
+            let grade = '';
+            
+            if (percentage >= 90) grade = 'A';
+            else if (percentage >= 80) grade = 'B';
+            else if (percentage >= 70) grade = 'C';
+            else if (percentage >= 60) grade = 'D';
+            else grade = 'F';
+            
+            // Get existing results or create new array
+            const existingResults = JSON.parse(localStorage.getItem('examResults') || '[]');
+            
+            // Create new result object
+            const newResult = {
+                activity: 'Vocabulary Test - Grade 11A Theme 2 Unit 1',
+                date: new Date().toLocaleString(),
+                score: score,
+                total: total,
+                percentage: percentage,
+                grade: grade,
+                module: 'Vocabulary'
+            };
+            
+            // Add new result to beginning of array
+            existingResults.unshift(newResult);
+            
+            // Keep only last 20 results
+            if (existingResults.length > 20) {
+                existingResults.length = 20;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('examResults', JSON.stringify(existingResults));
+            
+            // Also save as a separate vocabulary result for easy access
+            localStorage.setItem('vocabularyResult', JSON.stringify(newResult));
+        }
+        
+        // Reset answers function
+        function resetAnswers() {
+            document.querySelectorAll('.blank-input input').forEach(input => {
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+            });
+            
+            // Hide all hints
+            document.querySelectorAll('.hint').forEach(hint => {
+                hint.classList.remove('show');
+            });
+            
+            // Hide results
+            document.getElementById('results').classList.remove('show');
+            
+            // Reset timer
+            clearInterval(timerInterval);
+            timeLeft = 600;
+            updateTimer();
+            startTimer();
+            
+            // Reset timer color
+            document.getElementById('time').style.color = "#9c27b0";
+        }
+        
+        // Go to dashboard
+        function goToDashboard() {
+            // Get student name from URL or use default
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentName = urlParams.get('student') || 'Guest Student';
+            window.location.href = "..//dashboard.html?student=" + encodeURIComponent(studentName);
+        }
+        
+        // Go to results page
+        function goToResults() {
+            // Get student name from URL or use default
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentName = urlParams.get('student') || 'Guest Student';
+            window.location.href = "Results.html?student=" + encodeURIComponent(studentName);
+        }
+        
+        // Initialize on page load
+        window.onload = function() {
+            startTimer();
+            
+            // Get student name from URL and update page title if available
+            const urlParams = new URLSearchParams(window.location.search);
+            const studentName = urlParams.get('student');
+            if (studentName) {
+                document.title = `Adolescent Vocabulary Test - ${studentName}`;
+            }
+        };
+    </script>
+</body>
+</html>
