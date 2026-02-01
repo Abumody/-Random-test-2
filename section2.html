@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Section 2 – Reading</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#0f172a;
+  --card:#020617;
+  --accent:#38bdf8;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --border:#1e293b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  background:radial-gradient(circle at top,#0f172a,#020617);
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.card{
+  width:92%;
+  max-width:900px;
+  min-height:85vh;
+  background:linear-gradient(180deg,#0b1220,#020617);
+  border:1px solid var(--border);
+  border-radius:26px;
+  padding:40px;
+  display:flex;
+  flex-direction:column;
+}
+.header{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+.section-title{
+  color:var(--accent);
+  font-size:22px;
+  font-weight:bold;
+}
+.progress{
+  color:var(--muted);
+  font-size:14px;
+}
+.content{
+  flex-grow:1;
+  display:flex;
+  flex-direction:column;
+}
+.reading-box{
+  background:#020617;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  line-height:1.7;
+  color:#cbd5f5;
+  max-height:260px;
+  overflow-y:auto;
+  margin-bottom:25px;
+}
+.question{
+  font-size:22px;
+  font-weight:600;
+  margin-bottom:20px;
+}
+.options label{
+  display:block;
+  padding:12px 14px;
+  margin:10px 0;
+  background:#020617;
+  border:1px solid var(--border);
+  border-radius:14px;
+  cursor:pointer;
+}
+input[type=text], select{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  font-size:15px;
+}
+.match-container{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+.match-box{
+  background:#020617;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:15px;
+}
+.match-row{margin-bottom:12px}
+.nav{
+  display:flex;
+  justify-content:space-between;
+  margin-top:20px;
+}
+button{
+  padding:12px 30px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,#38bdf8,#0ea5e9);
+  color:#020617;
+  font-weight:bold;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div id="app"></div>
+
+<script>
+const questions = [
+{
+type:"mcq",
+reading:`Last weekend, Sara went to the beach with her family.
+They played games, swam in the sea, and had lunch together.
+Sara enjoyed the day very much.`,
+q:"Where did Sara go?",
+o:["the park","the beach"]
+},
+{
+type:"mcq",
+reading:`Last weekend, Sara went to the beach with her family.`,
+q:"Who went with her?",
+o:["her friends","her family"]
+},
+{
+type:"mcq",
+reading:`Last weekend, Sara went to the beach with her family.`,
+q:"Did Sara enjoy the day?",
+o:["Yes","No"]
+},
+{
+type:"short",
+reading:`Last weekend, Sara went to the beach with her family.`,
+q:"Write ONE thing they did."
+},
+{
+type:"matching",
+reading:`Hi Lucia,
+
+How are you? It was so nice to meet you last week in Sydney at the sales meeting. How was the rest of your trip? Did you see any kangaroos? I hope you got home to Mexico City OK.
+
+Anyway, I have the documents about the new Berlin offices. We're going to be open in three months. I moved here from London just last week. They are very nice offices, and the location is perfect. There are lots of restaurants, cafés and banks in the area. There's also public transport; we are next to an U-Bahn (that is the name for the metro here). Maybe you can come and see them one day? I would love to show you Berlin, especially in the winter. You said you have never seen snow – you will see lots here!
+
+Here's a photo of you and me at the restaurant in Sydney. That was a very fun night! Remember the singing Englishman? Crazy! Please send me any other photos you have of that night. Good memories.
+
+Please give me your email address and I will send you the documents.
+
+Bye for now,
+
+Mikel`,
+sentences:[
+"a. Mikel and Lucia met here.",
+"b. Mikel’s new offices are here.",
+"c. Mikel used to live here.",
+"d. Lucia lives here."
+],
+places:["Berlin","London","Mexico City","Sydney"]
+}
+];
+
+let index = 0;
+let answers = JSON.parse(localStorage.getItem("section2Answers") || "[]");
+
+function render(){
+  const q = questions[index];
+  let html = `
+  <div class="card">
+    <div class="header">
+      <div class="section-title">Reading</div>
+      <div class="progress">Question ${index+1} of ${questions.length}</div>
+    </div>
+
+    <div class="content">
+      <div class="reading-box">${q.reading}</div>
+      <div class="question">${q.q || "Match the sentences with the places."}</div>
+  `;
+
+  if(q.type==="mcq"){
+    html+=`<div class="options">`;
+    q.o.forEach((x,i)=>{
+      html+=`<label><input type="radio" name="a" value="${i}"> ${x}</label>`;
+    });
+    html+=`</div>`;
+  }
+
+  if(q.type==="short"){
+    html+=`<input type="text">`;
+  }
+
+  if(q.type==="matching"){
+    html+=`
+    <div class="match-container">
+      <div class="match-box">
+        <strong>Sentences</strong><br><br>
+        ${q.sentences.map(s=>`<div class="match-row">${s}</div>`).join("")}
+      </div>
+      <div class="match-box">
+        <strong>Places</strong><br><br>
+        ${q.sentences.map(()=>`
+          <div class="match-row">
+            <select>
+              <option value="">Select</option>
+              ${q.places.map(p=>`<option>${p}</option>`).join("")}
+            </select>
+          </div>`).join("")}
+      </div>
+    </div>`;
+  }
+
+  html+=`
+    </div>
+    <div class="nav">
+      <button onclick="prev()">Back</button>
+      <button onclick="next()">Next</button>
+    </div>
+  </div>`;
+
+  document.getElementById("app").innerHTML = html;
+
+  // 🔑 RESTORE ANSWERS
+  const saved = answers[index];
+  if(saved !== undefined && saved !== null){
+    if(q.type==="mcq"){
+      document.querySelectorAll("input[name='a']").forEach(r=>{
+        if(r.value == saved) r.checked = true;
+      });
+    }
+    if(q.type==="short"){
+      document.querySelector("input").value = saved;
+    }
+    if(q.type==="matching"){
+      document.querySelectorAll("select").forEach((s,i)=>{
+        if(saved[i]) s.value = saved[i];
+      });
+    }
+  }
+}
+
+function save(){
+  const q = questions[index];
+  let val=null;
+
+  if(q.type==="mcq"){
+    const r=document.querySelector("input[name='a']:checked");
+    if(r) val=r.value;
+  }
+  if(q.type==="short"){
+    val=document.querySelector("input").value;
+  }
+  if(q.type==="matching"){
+    val=[];
+    document.querySelectorAll("select").forEach(s=>val.push(s.value));
+  }
+
+  answers[index]=val;
+  localStorage.setItem("section2Answers",JSON.stringify(answers));
+}
+
+function next(){
+  save();
+  index<questions.length-1 ? (index++,render()) : location.href="section3.html";
+}
+function prev(){
+  save();
+  if(index>0){index--;render();}
+}
+
+render();
+</script>
+</body>
+</html>

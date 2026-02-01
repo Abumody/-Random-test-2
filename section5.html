@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Section 5 – Speaking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#0f172a;
+  --card:#020617;
+  --accent:#38bdf8;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --border:#1e293b;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  background:radial-gradient(circle at top,#0f172a,#020617);
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.card{
+  width:92%;
+  max-width:900px;
+  min-height:75vh;
+  background:linear-gradient(180deg,#0b1220,#020617);
+  border:1px solid var(--border);
+  border-radius:26px;
+  padding:50px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:30px;
+}
+
+.section-title{
+  color:var(--accent);
+  font-size:24px;
+  font-weight:bold;
+}
+
+.progress{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.question{
+  font-size:24px;
+  font-weight:600;
+  margin:18px 0;
+  text-align:center;
+}
+
+.instructions{
+  color:#cbd5f5;
+  text-align:center;
+  margin-top:30px;
+  font-size:16px;
+}
+
+.nav{
+  margin-top:40px;
+  display:flex;
+  justify-content:space-between;
+}
+
+button{
+  padding:12px 30px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,#38bdf8,#0ea5e9);
+  color:#020617;
+  font-weight:bold;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <div class="header">
+    <div class="section-title">Speaking</div>
+    <div class="progress">Final Section</div>
+  </div>
+
+  <div class="question">Tell me about yourself.</div>
+  <div class="question">What do you do after school?</div>
+  <div class="question">Describe your last weekend.</div>
+  <div class="question">Do you like shopping? Why?</div>
+
+  <div class="instructions">
+    Answer orally. Speak clearly and give full answers.
+  </div>
+
+  <div class="nav">
+    <button onclick="goBack()">Back</button>
+    <button onclick="finish()">Finish Test</button>
+  </div>
+</div>
+
+<script>
+function goBack(){
+  window.location.href = "section4.html";
+}
+
+function finish(){
+  window.location.href = "results.html";
+}
+</script>
+
+</body>
+</html>

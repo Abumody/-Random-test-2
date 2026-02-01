@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Section 1 – Grammar & Vocabulary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --bg:#0f172a;
+  --card:#020617;
+  --accent:#38bdf8;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+  --border:#1e293b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial, sans-serif;
+  background:radial-gradient(circle at top,#0f172a,#020617);
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.card{
+  width:92%;
+  max-width:900px;
+  min-height:85vh;
+  background:linear-gradient(180deg,#0b1220,#020617);
+  border:1px solid var(--border);
+  border-radius:26px;
+  padding:40px;
+  display:flex;
+  flex-direction:column;
+}
+.header{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+.section-title{
+  color:var(--accent);
+  font-size:22px;
+  font-weight:bold;
+}
+.progress{
+  color:var(--muted);
+  font-size:14px;
+}
+.content{
+  flex-grow:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.question{
+  font-size:26px;
+  font-weight:600;
+  margin-bottom:25px;
+}
+.options label{
+  display:block;
+  padding:14px 16px;
+  margin:10px 0;
+  background:#020617;
+  border:1px solid var(--border);
+  border-radius:14px;
+  cursor:pointer;
+}
+.options input{margin-right:10px}
+input[type=text]{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  font-size:16px;
+}
+.rewrite-box{
+  background:#1e293b;
+  border-left:5px solid var(--accent);
+  padding:16px;
+  margin-bottom:16px;
+  font-weight:bold;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+}
+td,th{
+  border:1px solid var(--border);
+  padding:10px;
+  text-align:center;
+}
+.nav{
+  display:flex;
+  justify-content:space-between;
+  margin-top:20px;
+}
+button{
+  padding:12px 30px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,#38bdf8,#0ea5e9);
+  color:#020617;
+  font-weight:bold;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div id="app"></div>
+
+<script>
+const questions = [
+{type:"mcq",q:"She ___ to school every day.",o:["go","goes","going"]},
+{type:"mcq",q:"My father and I always ___ tennis together.",o:["plays","play","playing"]},
+{type:"mcq",q:"Jack ___ live in Dubai.",o:["does not","do not","is not"]},
+{type:"mcq",q:"____ you have brothers and sisters.",o:["Do","Does","are"]},
+{type:"mcq",q:"Yesterday, we ___ a movie at home.",o:["watch","watched","watches"]},
+{type:"mcq",q:"Look! The boys ___ football now.",o:["play","played","are playing"]},
+{type:"mcq",q:"Choose the correct sentence:",o:["She don’t like shopping.","She doesn’t like shopping."]},
+{type:"rewrite",q:"Rewrite the sentence using yesterday:",original:"I play tennis."},
+{type:"rewrite",q:"Rewrite the sentence using negative form (not):",original:"She cooked the dinner."},
+{type:"mcq",q:"What does holiday mean?",o:["a school subject","time for rest or travel","a job"]},
+{type:"mcq",q:"What is the color of the sky?",o:["Yellow","Blue","Green"]},
+{type:"mcq",q:"Where do you buy clothes?",o:["library","market / shop","hospital"]},
+{type:"mcq",q:"What tense do we use to describe habits and routine?",o:["Past simple","Present continuous","Present simple"]},
+{type:"match",q:"Match the word with its meaning.",rows:["price","ticket","environment"],cols:["money you pay","paper to enter a place","nature around us"]},
+{type:"match",q:"Match the word with its meaning.",rows:["doctor","forest","treasure"],cols:["A person who treats people in hospital","A large area of land that is covered with trees","A collection of valuable things such as gold and silver"]}
+];
+
+let index = 0;
+let answers = JSON.parse(localStorage.getItem("section1Answers") || "[]");
+
+function render(){
+  const q = questions[index];
+  let html = `
+  <div class="card">
+    <div class="header">
+      <div class="section-title">Grammar & Vocabulary</div>
+      <div class="progress">Question ${index+1} of ${questions.length}</div>
+    </div>
+    <div class="content">
+      <div class="question">${q.q}</div>
+  `;
+
+  if(q.type==="mcq"){
+    html+=`<div class="options">`;
+    q.o.forEach((x,i)=>{
+      html+=`<label><input type="radio" name="a" value="${i}"> ${x}</label>`;
+    });
+    html+=`</div>`;
+  }
+
+  if(q.type==="rewrite"){
+    html+=`<div class="rewrite-box">${q.original}</div>
+           <input type="text">`;
+  }
+
+  if(q.type==="match"){
+    html+=`<table><tr><th></th>`;
+    q.cols.forEach(c=>html+=`<th>${c}</th>`);
+    html+=`</tr>`;
+    q.rows.forEach((r,ri)=>{
+      html+=`<tr><td>${r}</td>`;
+      q.cols.forEach((_,ci)=>{
+        html+=`<td><input type="radio" name="row${ri}" value="${ci}"></td>`;
+      });
+      html+=`</tr>`;
+    });
+    html+=`</table>`;
+  }
+
+  html+=`</div>
+    <div class="nav">
+      <button onclick="prev()">Back</button>
+      <button onclick="next()">Next</button>
+    </div>
+  </div>`;
+
+  document.getElementById("app").innerHTML = html;
+
+  // 🔑 RESTORE ANSWERS
+  const saved = answers[index];
+  if(saved !== undefined && saved !== null){
+    if(q.type==="mcq"){
+      document.querySelectorAll("input[name='a']").forEach(r=>{
+        if(r.value == saved) r.checked = true;
+      });
+    }
+    if(q.type==="rewrite"){
+      document.querySelector("input").value = saved;
+    }
+    if(q.type==="match"){
+      saved.forEach((v,i)=>{
+        const r = document.querySelector(`input[name='row${i}'][value='${v}']`);
+        if(r) r.checked = true;
+      });
+    }
+  }
+}
+
+function save(){
+  const q = questions[index];
+  let val=null;
+  if(q.type==="mcq"){
+    const r=document.querySelector("input[name='a']:checked");
+    if(r) val=r.value;
+  }
+  if(q.type==="rewrite"){
+    val=document.querySelector("input").value;
+  }
+  if(q.type==="match"){
+    val=[];
+    q.rows.forEach((_,i)=>{
+      const r=document.querySelector(`input[name='row${i}']:checked`);
+      val.push(r ? r.value : null);
+    });
+  }
+  answers[index]=val;
+  localStorage.setItem("section1Answers",JSON.stringify(answers));
+}
+
+function next(){ save(); index<questions.length-1 ? (index++,render()) : location.href="section2.html"; }
+function prev(){ save(); if(index>0){index--;render();} }
+
+render();
+</script>
+</body>
+</html>
