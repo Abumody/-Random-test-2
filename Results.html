@@ -1,211 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Test Results</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:Arial,sans-serif;
-  background:#020617;
-  color:#e5e7eb;
-  display:flex;
-  justify-content:center;
-}
-.card{
-  width:95%;
-  max-width:1100px;
-  padding:40px;
-}
-h1{text-align:center;color:#38bdf8}
-.section-title{margin-top:40px;color:#38bdf8}
-.question{
-  background:#020617;
-  border:1px solid #1e293b;
-  border-radius:14px;
-  padding:15px;
-  margin:10px 0;
-}
-.correct{color:#22c55e}
-.wrong{color:#ef4444}
-.summary{
-  display:flex;
-  justify-content:center;
-  gap:30px;
-  margin:30px 0;
-}
-.box{
-  padding:15px 25px;
-  border-radius:14px;
-  font-weight:bold;
-}
-.center{text-align:center;margin-top:30px}
-button{
-  padding:12px 30px;
-  border:none;
-  border-radius:999px;
-  background:#38bdf8;
-  color:#020617;
-  font-weight:bold;
-  cursor:pointer;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Results</title>
+  <link rel="stylesheet" href="results.css">
 </head>
-
 <body>
 
-<audio id="finishSound" src="assets/finish.mp3" autoplay></audio>
+<header class="top-bar">
+  <div class="brand">AWJ</div>
+  <div class="student-area">
+    <span id="studentName"></span>
+    <button onclick="goHome()">Home</button>
+  </div>
+</header>
 
-<div class="card">
-<h1>Test Results</h1>
+<main class="container">
 
-<div class="summary">
-  <div class="box correct" id="correctBox">Correct: 0</div>
-  <div class="box wrong" id="wrongBox">Wrong: 0</div>
-</div>
+  <h1>Exam Results</h1>
 
-<div id="details"></div>
+  <!-- Summary -->
+  <div id="summary" class="summary"></div>
 
-<h2 class="section-title">Writing & Speaking</h2>
-<p>These sections are not graded. Your teacher will assess them separately.</p>
+  <!-- Filter -->
+  <div class="filter">
+    <label>Filter by skill:</label>
+    <select id="skillFilter">
+      <option value="all">All</option>
+    </select>
+  </div>
 
-<div class="center">
-  <button onclick="closeTest()">Close Test</button>
-</div>
-</div>
+  <!-- Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Skill</th>
+        <th>Section</th>
+        <th>Test</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody id="resultsBody"></tbody>
+  </table>
 
-<script>
-let correct = 0;
-let wrong = 0;
-let html = "";
+</main>
 
-/* ================= SECTION 1 ================= */
-const s1Answers = JSON.parse(localStorage.getItem("section1Answers")||"[]");
-
-const s1Questions = [
-  {q:"She ___ to school every day.",options:["go","goes","going"],correct:1},
-  {q:"My father and I always ___ tennis together.",options:["plays","play","playing"],correct:1},
-  {q:"Jack ___ live in Dubai.",options:["does not","do not","is not"],correct:0},
-  {q:"____ you have brothers and sisters.",options:["Do","Does","are"],correct:0},
-  {q:"Yesterday, we ___ a movie at home.",options:["watch","watched","watches"],correct:1},
-  {q:"Look! The boys ___ football now.",options:["play","played","are playing"],correct:2},
-  {q:"Choose the correct sentence.",options:["She don’t like shopping.","She doesn’t like shopping."],correct:1},
-  {q:"Rewrite using yesterday.",text:"I played tennis yesterday."},
-  {q:"Rewrite using negative.",text:"She didn't cook the dinner."},
-  {q:"What does holiday mean?",options:["a school subject","time for rest or travel","a job"],correct:1},
-  {q:"What is the color of the sky?",options:["Yellow","Blue","Green"],correct:1},
-  {q:"Where do you buy clothes?",options:["library","market / shop","hospital"],correct:1},
-  {q:"What tense describes habits?",options:["Past simple","Present continuous","Present simple"],correct:2}
-];
-
-html += `<h2 class="section-title">Section 1: Grammar & Vocabulary</h2>`;
-
-s1Questions.forEach((item,i)=>{
-  const user = s1Answers[i];
-  let ok = false;
-  let userText = user ?? "No answer";
-
-  if(item.options){
-    userText = item.options[user];
-    ok = Number(user) === item.correct;
-  }else{
-    ok = typeof user === "string" && user.toLowerCase().includes(item.text.toLowerCase());
-  }
-
-  ok ? correct++ : wrong++;
-
-  html += `
-    <div class="question">
-      <strong>${item.q}</strong><br>
-      <span class="${ok?'correct':'wrong'}">Your answer: ${userText}</span><br>
-      <span class="correct">Correct answer: ${item.options ? item.options[item.correct] : item.text}</span>
-    </div>
-  `;
-});
-
-/* ================= SECTION 2 ================= */
-const s2Answers = JSON.parse(localStorage.getItem("section2Answers")||"[]");
-
-/* MCQ */
-const s2MCQ = [
-  {options:["the park","the beach"],correct:1},
-  {options:["her friends","her family"],correct:1},
-  {options:["Yes","No"],correct:0}
-];
-
-html += `<h2 class="section-title">Section 2: Reading</h2>`;
-
-s2MCQ.forEach((item,i)=>{
-  const user = s2Answers[i];
-  const ok = Number(user) === item.correct;
-  ok ? correct++ : wrong++;
-
-  html += `
-    <div class="question">
-      <strong>Reading Question ${i+1}</strong><br>
-      <span class="${ok?'correct':'wrong'}">Your answer: ${item.options[user]}</span><br>
-      <span class="correct">Correct answer: ${item.options[item.correct]}</span>
-    </div>
-  `;
-});
-
-/* ===== Reading Message / Matching ===== */
-const readingMatchUser = s2Answers[4]; // index ثابت
-const readingMatchCorrect = ["Sydney","Berlin","London","Mexico City"];
-
-if(Array.isArray(readingMatchUser)){
-  let matchOK = true;
-
-  readingMatchCorrect.forEach((ans,i)=>{
-    if(readingMatchUser[i] !== ans) matchOK = false;
-  });
-
-  matchOK ? correct++ : wrong++;
-
-  html += `
-    <div class="question">
-      <strong>Reading – Message Matching</strong><br>
-      <span class="${matchOK?'correct':'wrong'}">
-        Your answer: ${readingMatchUser.join(" | ")}
-      </span><br>
-      <span class="correct">
-        Correct answer: ${readingMatchCorrect.join(" | ")}
-      </span>
-    </div>
-  `;
-}
-
-/* ================= SECTION 3 ================= */
-const s3Answers = JSON.parse(localStorage.getItem("section3Answers")||"[]");
-const s3Correct = ["2","1","13","false","false","true","false","true"];
-
-html += `<h2 class="section-title">Section 3: Listening</h2>`;
-
-s3Correct.forEach((ans,i)=>{
-  const user = s3Answers[i];
-  const ok = user == ans;
-  ok ? correct++ : wrong++;
-
-  html += `
-    <div class="question">
-      <strong>Listening Question ${i+1}</strong><br>
-      <span class="${ok?'correct':'wrong'}">Your answer: ${user}</span>
-    </div>
-  `;
-});
-
-document.getElementById("details").innerHTML = html;
-document.getElementById("correctBox").innerText = "Correct: " + correct;
-document.getElementById("wrongBox").innerText = "Wrong: " + wrong;
-
-function closeTest(){
-  localStorage.clear();
-  location.href = "index.html";
-}
-</script>
-
+<script src="results.js"></script>
 </body>
 </html>
